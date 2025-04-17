@@ -1,0 +1,49 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile  
+    
+    depends_on:
+      - db      
+    volumes:
+      - .:/app 
+    networks:
+      - app-ci
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: app-nginx
+    restart: unless-stopped
+    ports:
+      - 8181:80
+    volumes:
+      - .:/app 
+    depends_on:
+      - "app"  
+    networks:
+      - app-ci   
+  
+  db:
+    container_name: db-ci
+    image: mysql:8.0  
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: app_codeigniter
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secret
+      TZ: America/Sao_Paulo
+    ports:
+      - 3310:3306
+    networks:
+      - app-ci
+    volumes:
+      - ./db_data:/var/lib/mysql
+  
+volumes:
+  db_data:
+
+networks:
+  app-ci:
+    driver: bridge
