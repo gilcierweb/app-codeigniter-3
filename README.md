@@ -28,4 +28,15 @@ docker-compose up # run http://localhost:9100
 docker-compose up --build # run http://localhost:9100
 ```
 
+### Enable migration codeigniter and run migrate custom cli by gilcierweb 
+
+```shell
+# php migration.php create_users
+# php migration.php create_profiles
+
+# run migrations
+php index.php migrate
+
+```
+
 https://gilcierweb.com.br

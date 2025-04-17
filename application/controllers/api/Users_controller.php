@@ -8,6 +8,7 @@ class Users_controller extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('user_model');
+		$this->load->library('encryption');
 	}
 	public function index()
 	{
@@ -32,13 +33,23 @@ class Users_controller extends CI_Controller
 	}
 	public function create()
 	{
+		$this->load->library('form_validation', 'input');
+
 		$data = json_decode($this->input->raw_input_stream, true);
 
-		$this->user_model->insert($data);
+		// $this->user_model->insert($data);
 
-		$this->output
-			->set_content_type('application/json')
-			->set_output(json_encode(['status' => 'success']));
+		if ($this->validation($data)) {
+			$this->output
+				->set_content_type('application/json')
+				->set_status_header(201)
+				->set_output(json_encode(['status' => 'success', 'Message' => "Success"]))->_display();
+		} else {
+			$this->output
+				->set_content_type('application/json')
+				->set_status_header(400)
+				->set_output(json_encode(['status' => 'error', 'message' => validation_errors()]))->_display();
+		}
 	}
 	public function update($id)
 	{
@@ -57,5 +68,47 @@ class Users_controller extends CI_Controller
 		$this->output
 			->set_content_type('application/json')
 			->set_output(json_encode(['status' => 'success']));
+	}
+
+	function validation($data)
+	{
+		$this->load->library('form_validation', 'input');
+		// gambiarra codeigniter 3
+		$this->form_validation->set_data($data);
+
+		$this->form_validation->set_rules('username', 'Username', 'required');
+		$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+		$this->form_validation->set_rules('password', 'Password', 'required|min_length[6]');
+
+		if ($this->form_validation->run() == FALSE) {
+			return false;
+		} else {
+			$username = $data['username'];
+			$email = $data['email'];
+			$password = $data['password'];
+
+			$this->db->where('email', $email);
+			$query = $this->db->get('users');
+
+			if ($query->num_rows() > 0) {
+				$this->output
+					->set_content_type('application/json')
+					->set_status_header(400)
+					->set_output(json_encode(['status' => 'error', 'message' => 'Email already exists']))->_display();
+				return false;
+			}
+
+			$encrypted_password = password_hash($password, PASSWORD_BCRYPT);
+
+			$data = array(
+				'username' => $username,
+				'email' => $email,
+				'password' => $encrypted_password
+			);
+
+			$this->user_model->insert($data);
+
+			return true;
+		}
 	}
 }
