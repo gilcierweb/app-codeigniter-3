@@ -1,102 +1,89 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<title>Welcome to CodeIgniter</title>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta name="author" content="GilcierWeb - Web Developer - gilcierweb@gmail.com - gilcier06@yahoo.com.br - Sites, Sistemas para Web, E-commerce, Manutenção de Sites, Apps Mobile. gilcierweb.com.br"/>
 
-	<style type="text/css">
+	<title>App CodeIgniter 3</title>
 
-	::selection { background-color: #E13300; color: white; }
-	::-moz-selection { background-color: #E13300; color: white; }
-
-	body {
-		background-color: #fff;
-		margin: 40px;
-		font: 13px/20px normal Helvetica, Arial, sans-serif;
-		color: #4F5155;
-	}
-
-	a {
-		color: #003399;
-		background-color: transparent;
-		font-weight: normal;
-		text-decoration: none;
-	}
-
-	a:hover {
-		color: #97310e;
-	}
-
-	h1 {
-		color: #444;
-		background-color: transparent;
-		border-bottom: 1px solid #D0D0D0;
-		font-size: 19px;
-		font-weight: normal;
-		margin: 0 0 14px 0;
-		padding: 14px 15px 10px 15px;
-	}
-
-	code {
-		font-family: Consolas, Monaco, Courier New, Courier, monospace;
-		font-size: 12px;
-		background-color: #f9f9f9;
-		border: 1px solid #D0D0D0;
-		color: #002166;
-		display: block;
-		margin: 14px 0 14px 0;
-		padding: 12px 10px 12px 10px;
-	}
-
-	#body {
-		margin: 0 15px 0 15px;
-		min-height: 96px;
-	}
-
-	p {
-		margin: 0 0 10px;
-		padding:0;
-	}
-
-	p.footer {
-		text-align: right;
-		font-size: 11px;
-		border-top: 1px solid #D0D0D0;
-		line-height: 32px;
-		padding: 0 10px 0 10px;
-		margin: 20px 0 0 0;
-	}
-
-	#container {
-		margin: 10px;
-		border: 1px solid #D0D0D0;
-		box-shadow: 0 0 8px #D0D0D0;
-	}
-	</style>
+	<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body>
+<body class="bg-gray-50">
+<main class="bg-gray-50 h-screen">
+	<div class="container mx-auto">
 
-<div id="container">
-	<h1>Welcome to CodeIgniter!</h1>
+		<section class="bg-gray-50">
 
-	<div id="body">
-		<p>The page you are looking at is being generated dynamically by CodeIgniter.</p>
+			<div class="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center">
 
-		<p>If you would like to edit this page you'll find it located at:</p>
-		<code>application/views/welcome_message.php</code>
+				<div class="mx-auto  text-center">
+					<div class=" flex  items-center justify-center flex-col">
+						<img alt="logo" class="mb-10 object-cover object-center rounded"
+							 src="assets/images/logo.png"/>
+					</div>
+					<h1 class="text-3xl font-extrabold sm:text-5xl">
+						App CodeIgniter 3 API.
+						<strong class="font-bold text-orange-600 sm:block"> API RESTful com CodeIgniter 3 </strong>
+					</h1>
 
-		<p>The corresponding controller for this page is found at:</p>
-		<code>application/controllers/Welcome.php</code>
+					<p class="mt-4 sm:text-xl/relaxed">
+						Em breve estaremos no ar! </p>
 
-		<p>If you are exploring CodeIgniter for the very first time, you should start by reading the <a href="userguide3/">User Guide</a>.</p>
+					<div class="mt-8 flex flex-wrap justify-center gap-4">
+						<a class="block w-full rounded bg-orange-600 px-12 py-3 text-sm font-medium text-white shadow hover:bg-orange-700 focus:outline-none focus:ring active:bg-orange-500 sm:w-auto"
+						   href="api/users">
+							Conheça
+						</a>
+					</div>
+				</div>
+			</div>
+		</section>
+
 	</div>
+</main>
 
-	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></p>
-</div>
+<footer class="mt-auto w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto ">
+	<!-- Grid -->
+	<div class="text-center container">
+		<div>
+			<a class="flex-none text-xl font-semibold text-black dark:text-white" href="/" aria-label="Brand">App CodeIgniter 3</a>
+		</div>
+		<!-- End Col -->
+
+		<div class="mt-3">
+			<p class="text-gray-500 dark:text-neutral-500">
+				© <?= date('Y') ?> App CodeIgniter 3.
+			</p>
+			<p class="text-gray-500 dark:text-neutral-500">Copyright &copy; <?= date('Y') ?> App CodeIgniter - All
+				Rights Reserved	- Desenvolvido por: <a href="https://gilcierweb.com.br/gilcierweb" title="GilcierWeb">GilcierWeb</a> -
+				Site criado com o Framework	<a href="https://CodeIgniter.com" title="CodeIgniter 3" target="_blank">CodeIgniter 3</a>
+			</p>
+			<p class="text-gray-500 dark:text-neutral-500">Page rendered in <strong>{elapsed_time}</strong>
+				seconds. <?php echo (ENVIRONMENT === 'development') ? 'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?>
+			</p>
+
+		</div>
+
+		<!-- Social Brands -->
+		<div class="mt-3 space-x-2">
+			<p class="copyright-text">Site melhor visualizado com navegadores modernos como:
+				<a href="https://browsehappy.com/" title="Mozilla Firefox" target="_blank">Firefox</a>,
+				<a href="https://www.opera.com/" title="Opera" target="_blank">Opera</a>,
+				<a href="https://browsehappy.com/" title="Google Chrome" target="_blank">Google Chrome</a>,
+				<a href="https://browsehappy.com/" title="Apple Safari" target="_blank">Apple Safari</a>,
+				<a href="https://browsehappy.com/" title="Brave" target="_blank" class="">Brave</a>,
+				<a href="https://browsehappy.com/" title="Vivaldi" target="_blank" class="">Vivaldi</a>
+			</p>
+		</div>
+		<!-- End Social Brands -->
+	</div>
+	<!-- End Grid -->
+</footer>
 
 </body>
 </html>

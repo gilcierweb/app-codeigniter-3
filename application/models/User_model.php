@@ -47,4 +47,10 @@ class User_model extends CI_Model
 		$this->db->where('id', $id);
 		return $this->db->delete('users');
 	}
+	public function by_email($email)
+	{
+		$this->db->where('email', $email);
+		$query = $this->db->get('users');
+		return $query->row();
+	}
 }

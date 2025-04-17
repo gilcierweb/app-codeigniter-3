@@ -60,3 +60,10 @@ $route['api/users']['post'] = 'api/users_controller/create'; // POST - Create
 $route['api/users/(:num)']['put'] = 'api/users_controller/update/$1'; // PUT - Update
 $route['api/users/(:num)']['patch'] = 'api/users_controller/update/$1'; // PATCH - Update
 $route['api/users/(:num)']['delete'] = 'api/users_controller/delete/$1'; // DELETE - Delete
+
+$route['api/profiles']['get'] = 'api/profiles_controller/index'; // GET - All
+$route['api/profiles/(:num)']['get'] = 'api/profiles_controller/show/$1'; // GET - Show
+$route['api/profiles']['post'] = 'api/profiles_controller/create'; // POST - Create
+$route['api/profiles/(:num)']['put'] = 'api/profiles_controller/update/$1'; // PUT - Update
+$route['api/profiles/(:num)']['patch'] = 'api/profiles_controller/update/$1'; // PATCH - Update
+$route['api/profiles/(:num)']['delete'] = 'api/profiles_controller/delete/$1'; // DELETE - Delete

@@ -4,11 +4,25 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Users_controller extends CI_Controller
 {
+	public $benchmark;
+	public $hooks;
+	public $config;
+	public $log;
+	public $utf8;
+	public $uri;
+	public $router;
+	public $output;
+	public $security;
+	public $input;
+	public $lang;
+	public $load;
+	public $form_validation;
+
 	public function __construct()
 	{
 		parent::__construct();
 		$this->load->model('user_model');
-		$this->load->library('encryption');
+		$this->load->library('form_validation');
 	}
 	public function index()
 	{
@@ -91,8 +105,8 @@ class Users_controller extends CI_Controller
 			$query = $this->db->get('users');
 
 			if ($query->num_rows() > 0) {
-				$this->output
-					->set_content_type('application/json')
+				$this->form_validation->set_message('email', 'The {field} field must be unique.');
+				$this->output->set_content_type('application/json')
 					->set_status_header(400)
 					->set_output(json_encode(['status' => 'error', 'message' => 'Email already exists']))->_display();
 				return false;
