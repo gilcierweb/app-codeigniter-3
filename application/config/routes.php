@@ -67,3 +67,9 @@ $route['api/profiles']['post'] = 'api/profiles_controller/create'; // POST - Cre
 $route['api/profiles/(:num)']['put'] = 'api/profiles_controller/update/$1'; // PUT - Update
 $route['api/profiles/(:num)']['patch'] = 'api/profiles_controller/update/$1'; // PATCH - Update
 $route['api/profiles/(:num)']['delete'] = 'api/profiles_controller/delete/$1'; // DELETE - Delete
+
+// Swagger Routes
+$route['swagger/json'] = 'swagger/json'; // Controller: Swagger, Método: json
+$route['swagger/ui'] = 'swagger/ui';
+$route['api/swagger-json'] = 'swagger/generate';
+$route['api/swagger-yaml'] = 'swagger/yaml'; // Opcional para YAML

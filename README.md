@@ -37,6 +37,27 @@ docker-compose up --build # run http://localhost:9100
 # run migrations
 php index.php migrate
 
+
+```
+
+### Run db:seed like rails
+
+```shell
+# run seed
+
+php index.php seeder users
+php index.php seeder profiles
+php index.php seeder all
+
+# Para gerar um número específico de usuários (ex: 10)
+php index.php seeder users 10
+
+# Para gerar um número específico de perfis (ex: 20)
+php index.php seeder profiles 20
+
+# Para gerar um número específico de ambos
+php index.php seeder all 15
+
 ```
 
 https://gilcierweb.com.br

@@ -1,6 +1,9 @@
 <?php
 
 defined('BASEPATH') or exit('No direct script access allowed');
+require_once APPPATH . '../../vendor/autoload.php'; // Carrega o autoload do Composer
+
+use OpenApi\Attributes as OA;
 
 class Profiles_controller extends CI_Controller
 {
@@ -24,6 +27,12 @@ class Profiles_controller extends CI_Controller
 		$this->load->model('profile_model');
 		$this->load->library('form_validation');
 	}
+	  /**
+     * @OA\Get(
+     *     path="/profiles",
+     *     @OA\Response(response="200", description="Success")
+     * )
+     */
 	public function index()
 	{
 		$profiles = $this->profile_model->all();
