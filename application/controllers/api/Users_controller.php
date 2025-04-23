@@ -188,10 +188,34 @@ class Users_controller extends CI_Controller
 	public function index()
 	{
 		$users = $this->user_model->all();
-
+			
 		$this->output
 			->set_content_type('application/json')
 			->set_output(json_encode($users));
+	}
+
+		/**
+	 * @SWG\Get(
+	 * path="/users-profiles",
+	 * summary="Lista todos os usuários e seus perfis",
+	 * tags={"Users"},
+	 * @SWG\Response(
+	 * response="200",
+	 * description="Lista de usuários",
+	 * @SWG\Schema(
+	 * type="array",
+	 * @SWG\Items(ref="#/definitions/User")
+	 * )
+	 * )
+	 * )
+	 */
+	public function users_profiles_all()
+	{
+		$users_profiles = $this->user_model->users_profiles();
+			
+		$this->output
+			->set_content_type('application/json')
+			->set_output(json_encode($users_profiles));
 	}
 
 	/**

@@ -60,6 +60,7 @@ $route['api/users']['post'] = 'api/users_controller/create'; // POST - Create
 $route['api/users/(:num)']['put'] = 'api/users_controller/update/$1'; // PUT - Update
 $route['api/users/(:num)']['patch'] = 'api/users_controller/update/$1'; // PATCH - Update
 $route['api/users/(:num)']['delete'] = 'api/users_controller/delete/$1'; // DELETE - Delete
+$route['api/users-profiles']['get'] = 'api/users_controller/users_profiles_all'; // GET - User Profiles All
 
 $route['api/profiles']['get'] = 'api/profiles_controller/index'; // GET - All
 $route['api/profiles/(:num)']['get'] = 'api/profiles_controller/show/$1'; // GET - Show

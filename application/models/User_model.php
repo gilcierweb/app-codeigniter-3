@@ -33,6 +33,17 @@ class User_model extends CI_Model
 		$query = $this->db->get('users');
 		return $query->result();
 	}
+
+	public function users_profiles()
+	{
+		$this->db->select('users.*, profiles.*');
+		$this->db->from('users');
+		$this->db->join('profiles', 'profiles.user_id = users.id');
+		$query = $this->db->get();
+	
+		return $query->result();
+	}
+	
 	public function insert($data)
 	{
 		return $this->db->insert('users', $data);
