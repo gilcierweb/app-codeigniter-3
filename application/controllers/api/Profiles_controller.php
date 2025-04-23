@@ -1,7 +1,8 @@
 <?php
 
 defined('BASEPATH') or exit('No direct script access allowed');
-require_once APPPATH . '../../vendor/autoload.php'; // Carrega o autoload do Composer
+
+require_once APPPATH . '../vendor/autoload.php'; // Carrega o autoload do Composer
 
 use OpenApi\Attributes as OA;
 

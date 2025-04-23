@@ -37,7 +37,6 @@ docker-compose up --build # run http://localhost:9100
 # run migrations
 php index.php migrate
 
-
 ```
 
 ### Run db:seed like rails
@@ -59,5 +58,21 @@ php index.php seeder profiles 20
 php index.php seeder all 15
 
 ```
+
+### Import API file Postman and Insomnia
+```text
+postman-insomnia.json
+```
+### API with Swagger UI
+```text
+/swagger/ui
+```
+
+### Todo
+
+- JWT
+- OAuth 2.0
+- Change password
+- 
 
 https://gilcierweb.com.br
