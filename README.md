@@ -2,8 +2,9 @@
 
 ### Api Codeigniter 3
 
-```json
-
+```shell
+# swagger ui
+http://0.0.0.0:9100/swagger
 ```
 
 ### Skills
@@ -59,20 +60,21 @@ php index.php seeder all 15
 
 ```
 
-### Import API file Postman and Insomnia
+### Import API file in Postman and Insomnia
 ```text
 postman-insomnia.json
 ```
 ### API with Swagger UI
 ```text
-/swagger/ui
+http://0.0.0.0:9100/swagger
 ```
 
 ### Todo
 
-- JWT
-- OAuth 2.0
-- Change password
-- 
+* [ ] Swagger UI
+* [ ] JWT
+* [ ] OAuth 2.0
+* [ ] Change password
+* [ ] Notifications SMS, RCS, email, push notification
 
 https://gilcierweb.com.br

@@ -1,12 +1,142 @@
 <?php
-
+// die('No direct script access allowed');
 defined('BASEPATH') or exit('No direct script access allowed');
+// error_reporting(-1);
+//  ini_set('display_errors', 1);
 
 require_once APPPATH . '../vendor/autoload.php'; // Carrega o autoload do Composer
 use OpenApi\Annotations as OA;
-// use OpenApi\Attributes as OA;
-use OpenApi\Attributes as SWG;
 
+
+/**
+ * @OA\Info(
+ * version="1.0.0",
+ * title="API de Usuários e Perfis",
+ * description="API para gerenciar usuários e seus perfis.",
+ * @OA\Contact(
+ * email="seuemail@example.com"
+ * )
+ * )
+ * @OA\Server(
+ * url="{scheme}://{host}/api",
+ * description="Servidor da API",
+ * @OA\ServerVariable(
+ * serverVariable="scheme",
+ * enum={"http", "https"},
+ * default="http"
+ * ),
+ * @OA\ServerVariable(
+ * serverVariable="host",
+ * default=API_HOST
+ * )
+ * )
+ * @OA\Tag(
+ * name="Users",
+ * description="Operações relacionadas a usuários"
+ * )
+ * @OA\Tag(
+ * name="Profiles",
+ * description="Operações relacionadas a perfis de usuário"
+ * )
+ * @OA\Schema(
+ * schema="User",
+ * type="object",
+ * properties={
+ * @OA\Property(property="id", type="integer", format="int64"),
+ * @OA\Property(property="username", type="string"),
+ * @OA\Property(property="email", type="string"),
+ * @OA\Property(property="created_at", type="string", format="date-time"),
+ * @OA\Property(property="updated_at", type="string", format="date-time")
+ * }
+ * )
+ * @OA\Schema(
+ * schema="NewUser",
+ * type="object",
+ * required={"username", "email", "password"},
+ * properties={
+ * @OA\Property(property="username", type="string"),
+ * @OA\Property(property="email", type="string"),
+ * @OA\Property(property="password", type="string")
+ * }
+ * )
+ * @OA\Schema(
+ * schema="UpdateUser",
+ * type="object",
+ * properties={
+ * @OA\Property(property="username", type="string"),
+ * @OA\Property(property="email", type="string"),
+ * @OA\Property(property="password", type="string")
+ * }
+ * )
+ * @OA\Schema(
+ * schema="Profile",
+ * type="object",
+ * properties={
+ * @OA\Property(property="id", type="integer", format="int64"),
+ * @OA\Property(property="first_name", type="string", nullable=true),
+ * @OA\Property(property="last_name", type="string", nullable=true),
+ * @OA\Property(property="website", type="string", nullable=true),
+ * @OA\Property(property="instagram", type="string", nullable=true),
+ * @OA\Property(property="facebook", type="string", nullable=true),
+ * @OA\Property(property="linkedin", type="string", nullable=true),
+ * @OA\Property(property="twitter_x", type="string", nullable=true),
+ * @OA\Property(property="avatar", type="string", nullable=true),
+ * @OA\Property(property="bio", type="string", nullable=true),
+ * @OA\Property(property="user_id", type="integer", format="int64"),
+ * @OA\Property(property="created_at", type="string", format="date-time"),
+ * @OA\Property(property="updated_at", type="string", format="date-time")
+ * }
+ * )
+ * @OA\Schema(
+ * schema="NewProfile",
+ * type="object",
+ * required={"user_id"},
+ * properties={
+ * @OA\Property(property="first_name", type="string", nullable=true),
+ * @OA\Property(property="last_name", type="string", nullable=true),
+ * @OA\Property(property="website", type="string", nullable=true),
+ * @OA\Property(property="instagram", type="string", nullable=true),
+ * @OA\Property(property="facebook", type="string", nullable=true),
+ * @OA\Property(property="linkedin", type="string", nullable=true),
+ * @OA\Property(property="twitter_x", type="string", nullable=true),
+ * @OA\Property(property="avatar", type="string", nullable=true),
+ * @OA\Property(property="bio", type="string", nullable=true),
+ * @OA\Property(property="user_id", type="integer", format="int64")
+ * }
+ * )
+ * @OA\Schema(
+ * schema="UpdateProfile",
+ * type="object",
+ * properties={
+ * @OA\Property(property="first_name", type="string", nullable=true),
+ * @OA\Property(property="last_name", type="string", nullable=true),
+ * @OA\Property(property="website", type="string", nullable=true),
+ * @OA\Property(property="instagram", type="string", nullable=true),
+ * @OA\Property(property="facebook", type="string", nullable=true),
+ * @OA\Property(property="linkedin", type="string", nullable=true),
+ * @OA\Property(property="twitter_x", type="string", nullable=true),
+ * @OA\Property(property="avatar", type="string", nullable=true),
+ * @OA\Property(property="bio", type="string", nullable=true),
+ * @OA\Property(property="user_id", type="integer", format="int64")
+ * }
+ * )
+ * @OA\Response(
+ * response="404",
+ * description="Recurso não encontrado"
+ * )
+ * @OA\Response(
+ * response="400",
+ * description="Erro de validação"
+ * )
+ * @OA\Response(
+ * response="201",
+ * description="Criado com sucesso"
+ * )
+ * @OA\Response(
+ * response="200",
+ * description="Sucesso"
+ * )
+ */
 
 class Users_controller extends CI_Controller
 {
@@ -29,27 +159,32 @@ class Users_controller extends CI_Controller
 		parent::__construct();
 		$this->load->model('user_model');
 		$this->load->library('form_validation');
+
+		header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+        header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
+        
+        // Handle OPTIONS method
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+            exit(0);
+        }
 	}
 
-	/**
-	 * @SWG\Get(
-	 * path="/users",
-	 * summary="Lista todos os usuários",
-	 * tags={"Users"},
-	 * @SWG\Response(
-	 * response=200,
-	 * description="Lista de usuários",
-	 * @SWG\Schema(
-	 * type="array",
-	 * @SWG\Items(ref="#/definitions/User")
-	 * )
-	 * ),
-	 * @SWG\Response(
-	 * response=500,
-	 * description="Erro interno do servidor"
-	 * )
-	 * )
-	 */
+	 /**
+     * @SWG\Get(
+     * path="/users",
+     * summary="Lista todos os usuários",
+     * tags={"Users"},
+     * @SWG\Response(
+     * response="200",
+     * description="Lista de usuários",
+     * @SWG\Schema(
+     * type="array",
+     * @SWG\Items(ref="#/definitions/User")
+     * )
+     * )
+     * )
+     */
 	public function index()
 	{
 		$users = $this->user_model->all();
@@ -59,30 +194,27 @@ class Users_controller extends CI_Controller
 			->set_output(json_encode($users));
 	}
 
-	/**
-	 * @SWG\Get(
-	 * path="/users/{id}",
-	 * summary="Busca um usuário por ID",
-	 * tags={"Users"},
-	 * @SWG\Parameter(
-	 * name="id",
-	 * in="path",
-	 * required=true,
-	 * description="ID do usuário a ser buscado",
-	 * type="integer",
-	 * format="int64"
-	 * ),
-	 * @SWG\Response(
-	 * response=200,
-	 * description="Dados do usuário",
-	 * @SWG\Schema(ref="#/definitions/User")
-	 * ),
-	 * @SWG\Response(
-	 * response=404,
-	 * description="Usuário não encontrado"
-	 * )
-	 * )
-	 */
+	 /**
+     * @SWG\Get(
+     * path="/users/{id}",
+     * summary="Busca um usuário por ID",
+     * tags={"Users"},
+     * @SWG\Parameter(
+     * name="id",
+     * in="path",
+     * required=true,
+     * description="ID do usuário a ser buscado",
+     * type="integer",
+     * format="int64"
+     * ),
+     * @SWG\Response(
+     * response="200",
+     * description="Dados do usuário",
+     * @SWG\Schema(ref="#/definitions/User")
+     * ),
+     * @SWG\Response(response="404")
+     * )
+     */
 	public function show($id)
 	{
 		$user = $this->user_model->find($id);
@@ -95,7 +227,22 @@ class Users_controller extends CI_Controller
 			show_404();
 		}
 	}
-
+ /**
+     * @SWG\Post(
+     * path="/users",
+     * summary="Cria um novo usuário",
+     * tags={"Users"},
+     * @SWG\Parameter(
+     * name="body",
+     * in="body",
+     * required=true,
+     * description="Dados do novo usuário",
+     * @SWG\Schema(ref="#/definitions/NewUser")
+     * ),
+     * @SWG\Response(response="201"),
+     * @SWG\Response(response="400")
+     * )
+     */
 	public function create()
 	{
 		$this->load->library('form_validation', 'input');
@@ -116,7 +263,30 @@ class Users_controller extends CI_Controller
 				->set_output(json_encode(['status' => 'error', 'message' => validation_errors()]));
 		}
 	}
-
+ /**
+     * @SWG\Put(
+     * path="/users/{id}",
+     * summary="Atualiza um usuário existente",
+     * tags={"Users"},
+     * @SWG\Parameter(
+     * name="id",
+     * in="path",
+     * required=true,
+     * description="ID do usuário a ser atualizado",
+     * type="integer",
+     * format="int64"
+     * ),
+     * @SWG\Parameter(
+     * name="body",
+     * in="body",
+     * description="Dados para atualizar o usuário",
+     * @SWG\Schema(ref="#/definitions/UpdateUser")
+     * ),
+     * @SWG\Response(response="200"),
+     * @SWG\Response(response="400"),
+     * @SWG\Response(response="404")
+     * )
+     */
 	public function update($id)
 	{
 		$data = json_decode($this->input->raw_input_stream, true);
@@ -127,7 +297,23 @@ class Users_controller extends CI_Controller
 			->set_content_type('application/json')
 			->set_output(json_encode(['status' => 'success']));
 	}
-
+/**
+     * @SWG\Delete(
+     * path="/users/{id}",
+     * summary="Deleta um usuário",
+     * tags={"Users"},
+     * @SWG\Parameter(
+     * name="id",
+     * in="path",
+     * required=true,
+     * description="ID do usuário a ser deletado",
+     * type="integer",
+     * format="int64"
+     * ),
+     * @SWG\Response(response="200"),
+     * @SWG\Response(response="404")
+     * )
+     */
 	public function delete($id)
 	{
 		$this->user_model->delete($id);

@@ -69,7 +69,10 @@ $route['api/profiles/(:num)']['patch'] = 'api/profiles_controller/update/$1'; //
 $route['api/profiles/(:num)']['delete'] = 'api/profiles_controller/delete/$1'; // DELETE - Delete
 
 // Swagger Routes
-$route['swagger/json'] = 'swagger/json'; // Controller: Swagger, Método: json
-$route['swagger/ui'] = 'swagger/ui';
-$route['api/swagger-json'] = 'swagger/generate';
-$route['api/swagger-yaml'] = 'swagger/yaml'; // Opcional para YAML
+// $route['swagger/json'] = 'swagger/json'; // Controller: Swagger, Método: json
+// $route['swagger/ui'] = 'swagger/ui';
+$route['swagger'] = 'swagger/index';
+// $route['swagger/json'] = 'swagger/json';
+$route['api/swagger-json']['get'] = 'swagger/generate';
+$route['api/swagger.yaml'] = 'swagger/yaml';
+

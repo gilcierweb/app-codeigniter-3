@@ -1,3 +1,638 @@
 {
-    "openapi": "3.0.0"
-}
+	"openapi": "3.0.0",
+	"info": {
+	  "version": "1.0.0",
+	  "title": "API de Usuários e Perfis",
+	  "description": "API para gerenciar usuários e seus perfis.",
+	  "contact": {
+		"email": "gilcierweb@gmail.com"
+	  }
+	},
+	"servers": [
+	  {
+		"url": "{scheme}://{host}/api",
+		"description": "Servidor da API",
+		"variables": {
+		  "scheme": {
+			"enum": [
+			  "http",
+			  "https"
+			],
+			"default": "http"
+		  },
+		  "host": {
+			"default": "localhost:9100"
+		  }
+		}
+	  }
+	],
+	"tags": [
+	  {
+		"name": "Users",
+		"description": "Operações relacionadas a usuários"
+	  },
+	  {
+		"name": "Profiles",
+		"description": "Operações relacionadas a perfis de usuário"
+	  }
+	],
+	"components": {
+	  "schemas": {
+		"User": {
+		  "type": "object",
+		  "properties": {
+			"id": {
+			  "type": "integer",
+			  "format": "int64"
+			},
+			"username": {
+			  "type": "string"
+			},
+			"email": {
+			  "type": "string"
+			},
+			"created_at": {
+			  "type": "string",
+			  "format": "date-time"
+			},
+			"updated_at": {
+			  "type": "string",
+			  "format": "date-time"
+			}
+		  }
+		},
+		"NewUser": {
+		  "type": "object",
+		  "required": [
+			"username",
+			"email",
+			"password"
+		  ],
+		  "properties": {
+			"username": {
+			  "type": "string"
+			},
+			"email": {
+			  "type": "string"
+			},
+			"password": {
+			  "type": "string"
+			}
+		  }
+		},
+		"UpdateUser": {
+		  "type": "object",
+		  "properties": {
+			"username": {
+			  "type": "string"
+			},
+			"email": {
+			  "type": "string"
+			},
+			"password": {
+			  "type": "string"
+			}
+		  }
+		},
+		"Profile": {
+		  "type": "object",
+		  "properties": {
+			"id": {
+			  "type": "integer",
+			  "format": "int64"
+			},
+			"first_name": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"last_name": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"website": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"instagram": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"facebook": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"linkedin": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"twitter_x": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"avatar": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"bio": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"user_id": {
+			  "type": "integer",
+			  "format": "int64"
+			},
+			"created_at": {
+			  "type": "string",
+			  "format": "date-time"
+			},
+			"updated_at": {
+			  "type": "string",
+			  "format": "date-time"
+			}
+		  }
+		},
+		"NewProfile": {
+		  "type": "object",
+		  "required": [
+			"user_id"
+		  ],
+		  "properties": {
+			"first_name": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"last_name": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"website": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"instagram": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"facebook": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"linkedin": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"twitter_x": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"avatar": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"bio": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"user_id": {
+			  "type": "integer",
+			  "format": "int64"
+			}
+		  }
+		},
+		"UpdateProfile": {
+		  "type": "object",
+		  "properties": {
+			"first_name": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"last_name": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"website": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"instagram": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"facebook": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"linkedin": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"twitter_x": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"avatar": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"bio": {
+			  "type": "string",
+			  "nullable": true
+			},
+			"user_id": {
+			  "type": "integer",
+			  "format": "int64"
+			}
+		  }
+		},
+		"NotFoundError": {
+		  "type": "object",
+		  "properties": {
+			"message": {
+			  "type": "string",
+			  "example": "Recurso não encontrado"
+			}
+		  }
+		},
+		"ValidationError": {
+		  "type": "object",
+		  "properties": {
+			"message": {
+			  "type": "string",
+			  "example": "Erro de validação"
+			}
+		  }
+		},
+		"SuccessCreatedResponse": {
+		  "type": "object",
+		  "properties": {
+			"status": {
+			  "type": "string",
+			  "example": "success"
+			},
+			"Message": {
+			  "type": "string",
+			  "example": "Success"
+			}
+		  }
+		},
+		"SuccessResponse": {
+		  "type": "object",
+		  "properties": {
+			"status": {
+			  "type": "string",
+			  "example": "success"
+			}
+		  }
+		},
+		"ErrorResponse": {
+		  "type": "object",
+		  "properties": {
+			"status": {
+			  "type": "string",
+			  "example": "error"
+			},
+			"message": {
+			  "type": "string",
+			  "example": "Validation errors here"
+			}
+		  }
+		}
+	  },
+	  "responses": {
+		"404": {
+		  "description": "Recurso não encontrado",
+		  "content": {
+			"application/json": {
+			  "schema": {
+				"$ref": "#/components/schemas/NotFoundError"
+			  }
+			}
+		  }
+		},
+		"400": {
+		  "description": "Erro de validação",
+		  "content": {
+			"application/json": {
+			  "schema": {
+				"$ref": "#/components/schemas/ErrorResponse"
+			  }
+			}
+		  }
+		},
+		"201": {
+		  "description": "Criado com sucesso",
+		  "content": {
+			"application/json": {
+			  "schema": {
+				"$ref": "#/components/schemas/SuccessCreatedResponse"
+			  }
+			}
+		  }
+		},
+		"200": {
+		  "description": "Sucesso",
+		  "content": {
+			"application/json": {
+			  "schema": {
+				"$ref": "#/components/schemas/SuccessResponse"
+			  }
+			}
+		  }
+		}
+	  }
+	},
+	"paths": {
+	  "/users": {
+		"get": {
+		  "summary": "Lista todos os usuários",
+		  "tags": [
+			"Users"
+		  ],
+		  "responses": {
+			"200": {
+			  "description": "Lista de usuários",
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"type": "array",
+					"items": {
+					  "$ref": "#/components/schemas/User"
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		},
+		"post": {
+		  "summary": "Cria um novo usuário",
+		  "tags": [
+			"Users"
+		  ],
+		  "requestBody": {
+			"required": true,
+			"content": {
+			  "application/json": {
+				"schema": {
+				  "$ref": "#/components/schemas/NewUser"
+				}
+			  }
+			}
+		  },
+		  "responses": {
+			"201": {
+			  "$ref": "#/components/responses/201"
+			},
+			"400": {
+			  "$ref": "#/components/responses/400"
+			}
+		  }
+		}
+	  },
+	  "/users/{id}": {
+		"get": {
+		  "summary": "Busca um usuário por ID",
+		  "tags": [
+			"Users"
+		  ],
+		  "parameters": [
+			{
+			  "name": "id",
+			  "in": "path",
+			  "required": true,
+			  "description": "ID do usuário a ser buscado",
+			  "schema": {
+				"type": "integer",
+				"format": "int64"
+			  }
+			}
+		  ],
+		  "responses": {
+			"200": {
+			  "description": "Dados do usuário",
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"$ref": "#/components/schemas/User"
+				  }
+				}
+			  }
+			},
+			"404": {
+			  "$ref": "#/components/responses/404"
+			}
+		  }
+		},
+		"put": {
+		  "summary": "Atualiza um usuário existente",
+		  "tags": [
+			"Users"
+		  ],
+		  "parameters": [
+			{
+			  "name": "id",
+			  "in": "path",
+			  "required": true,
+			  "description": "ID do usuário a ser atualizado",
+			  "schema": {
+				"type": "integer",
+				"format": "int64"
+			  }
+			}
+		  ],
+		  "requestBody": {
+			"content": {
+			  "application/json": {
+				"schema": {
+				  "$ref": "#/components/schemas/UpdateUser"
+				}
+			  }
+			}
+		  },
+		  "responses": {
+			"200": {
+			  "$ref": "#/components/responses/200"
+			},
+			"400": {
+			  "$ref": "#/components/responses/400"
+			},
+			"404": {
+			  "$ref": "#/components/responses/404"
+			}
+		  }
+		},
+		"delete": {
+		  "summary": "Deleta um usuário",
+		  "tags": [
+			"Users"
+		  ],
+		  "parameters": [
+			{
+			  "name": "id",
+			  "in": "path",
+			  "required": true,
+			  "description": "ID do usuário a ser deletado",
+			  "schema": {
+				"type": "integer",
+				"format": "int64"
+			  }
+			}
+		  ],
+		  "responses": {
+			"200": {
+			  "$ref": "#/components/responses/200"
+			},
+			"404": {
+			  "$ref": "#/components/responses/404"
+			}
+		  }
+		}
+	  },
+	  "/profiles": {
+		"get": {
+		  "summary": "Lista todos os perfis",
+		  "tags": [
+			"Profiles"
+		  ],
+		  "responses": {
+			"200": {
+			  "description": "Lista de perfis",
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"type": "array",
+					"items": {
+					  "$ref": "#/components/schemas/Profile"
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		},
+		"post": {
+		  "summary": "Cria um novo perfil",
+		  "tags": [
+			"Profiles"
+		  ],
+		  "requestBody": {
+			"required": true,
+			"content": {
+			  "application/json": {
+				"schema": {
+				  "$ref": "#/components/schemas/NewProfile"
+				}
+			  }
+			}
+		  },
+		  "responses": {
+			"201": {
+			  "$ref": "#/components/responses/201"
+			},
+			"400": {
+			  "$ref": "#/components/responses/400"
+			}
+		  }
+		}
+	  },
+	  "/profiles/{id}": {
+		"get": {
+		  "summary": "Busca um perfil por ID",
+		  "tags": [
+			"Profiles"
+		  ],
+		  "parameters": [
+			{
+			  "name": "id",
+			  "in": "path",
+			  "required": true,
+			  "description": "ID do perfil a ser buscado",
+			  "schema": {
+				"type": "integer",
+				"format": "int64"
+			  }
+			}
+		  ],
+		  "responses": {
+			"200": {
+			  "description": "Dados do perfil",
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"$ref": "#/components/schemas/Profile"
+				  }
+				}
+			  }
+			},
+			"404": {
+			  "$ref": "#/components/responses/404"
+			}
+		  }
+		},
+		"put": {
+		  "summary": "Atualiza um perfil existente",
+		  "tags": [
+			"Profiles"
+		  ],
+		  "parameters": [
+			{
+			  "name": "id",
+			  "in": "path",
+			  "required": true,
+			  "description": "ID do perfil a ser atualizado",
+			  "schema": {
+				"type": "integer",
+				"format": "int64"
+			  }
+			}
+		  ],
+		  "requestBody": {
+			"content": {
+			  "application/json": {
+				"schema": {
+				  "$ref": "#/components/schemas/UpdateProfile"
+				}
+			  }
+			}
+		  },
+		  "responses": {
+			"200": {
+			  "$ref": "#/components/responses/200"
+			},
+			"400": {
+			  "$ref": "#/components/responses/400"
+			},
+			"404": {
+			  "$ref": "#/components/responses/404"
+			}
+		  }
+		},
+		"delete": {
+		  "summary": "Deleta um perfil",
+		  "tags": [
+			"Profiles"
+		  ],
+		  "parameters": [
+			{
+			  "name": "id",
+			  "in": "path",
+			  "required": true,
+			  "description": "ID do perfil a ser deletado",
+			  "schema": {
+				"type": "integer",
+				"format": "int64"
+			  }
+			}
+		  ],
+		  "responses": {
+			"200": {
+			  "$ref": "#/components/responses/200"
+			},
+			"404": {
+			  "$ref": "#/components/responses/404"
+			}
+		  }
+		}
+	  }
+	}
+  }

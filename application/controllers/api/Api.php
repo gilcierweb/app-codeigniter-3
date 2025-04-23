@@ -1,23 +1,23 @@
 <?php
+// exit('No direct script access allowed');
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once APPPATH . '../../vendor/autoload.php'; // Carrega o autoload do Composer
-
-// use OpenApi\Attributes as OA;
-
+// error_reporting(-1);
+//  ini_set('display_errors', 1);
 use OpenApi\Annotations as OA;
-
-class OpenApi {}
 
 /**
  * @OA\Info(
- *     title="Minha API CodeIgniter",
+ *     title="CodeIgniter API",
  *     version="1.0.0",
- *     description="Documentação Oficial da API",
- *     @OA\Contact(email="suporte@example.com")
+ *     description="API Documentation"
  * )
- * @OA\Server(url="http://localhost:9100")
+ * @OA\Server(
+ *     url="http://0.0.0.0:9100",
+ *     description="API Server"
+ * )
  */
-// class Api extends CI_Controller {
-//     // Este controller pode estar vazio, serve apenas para as anotações globais
-// }
+class Api extends CI_Controller {
+    // Este controller pode estar vazio, serve apenas para as anotações globais
+}
 
