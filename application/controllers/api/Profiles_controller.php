@@ -33,32 +33,32 @@ class Profiles_controller extends CI_Controller
 		parent::__construct();
 		$this->load->model('profile_model');
 		$this->load->library('form_validation');
-		
+
 		header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-        header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
-        
-        // Handle OPTIONS method
-        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-            exit(0);
-        }
+		header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+		header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
+
+		// Handle OPTIONS method
+		if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+			exit(0);
+		}
 	}
 
-/**
-     * @OA\Get(
-     * path="/profiles",
-     * summary="Lista todos os perfis",
-     * tags={"Profiles"},
-     * @OA\Response(
-     * response="200",
-     * description="Lista de perfis",
-     * @OA\JsonContent(
-     * type="array",
-     * @OA\Items(ref="#/components/schemas/Profile")
-     * )
-     * )
-     * )
-     */
+	/**
+	 * @OA\Get(
+	 * path="/profiles",
+	 * summary="Lista todos os perfis",
+	 * tags={"Profiles"},
+	 * @OA\Response(
+	 * response="200",
+	 * description="Lista de perfis",
+	 * @OA\JsonContent(
+	 * type="array",
+	 * @OA\Items(ref="#/components/schemas/Profile")
+	 * )
+	 * )
+	 * )
+	 */
 	public function index()
 	{
 		$profiles = $this->profile_model->all();
@@ -67,26 +67,26 @@ class Profiles_controller extends CI_Controller
 			->set_content_type('application/json')
 			->set_output(json_encode($profiles));
 	}
-	   /**
-     * @OA\Get(
-     * path="/profiles/{id}",
-     * summary="Busca um perfil por ID",
-     * tags={"Profiles"},
-     * @OA\Parameter(
-     * name="id",
-     * in="path",
-     * required=true,
-     * description="ID do perfil a ser buscado",
-     * @OA\Schema(type="integer", format="int64")
-     * ),
-     * @OA\Response(
-     * response="200",
-     * description="Dados do perfil",
-     * @OA\JsonContent(ref="#/components/schemas/Profile")
-     * ),
-     * @OA\Response(response="404")
-     * )
-     */
+	/**
+	 * @OA\Get(
+	 * path="/profiles/{id}",
+	 * summary="Busca um perfil por ID",
+	 * tags={"Profiles"},
+	 * @OA\Parameter(
+	 * name="id",
+	 * in="path",
+	 * required=true,
+	 * description="ID do perfil a ser buscado",
+	 * @OA\Schema(type="integer", format="int64")
+	 * ),
+	 * @OA\Response(
+	 * response="200",
+	 * description="Dados do perfil",
+	 * @OA\JsonContent(ref="#/components/schemas/Profile")
+	 * ),
+	 * @OA\Response(response="404")
+	 * )
+	 */
 	public function show($id)
 	{
 		$profile = $this->profile_model->find($id);
@@ -99,95 +99,71 @@ class Profiles_controller extends CI_Controller
 			show_404();
 		}
 	}
-	  /**
-     * @OA\Post(
-     * path="/profiles",
-     * summary="Cria um novo perfil",
-     * tags={"Profiles"},
-     * @OA\RequestBody(
-     * required=true,
-     * @OA\JsonContent(ref="#/components/schemas/NewProfile")
-     * ),
-     * @OA\Response(response="201"),
-     * @OA\Response(response="400")
-     * )
-     */
+	/**
+	 * @OA\Post(
+	 * path="/profiles",
+	 * summary="Cria um novo perfil",
+	 * tags={"Profiles"},
+	 * @OA\RequestBody(
+	 * required=true,
+	 * @OA\JsonContent(ref="#/components/schemas/NewProfile")
+	 * ),
+	 * @OA\Response(response="201"),
+	 * @OA\Response(response="400")
+	 * )
+	 */
 	public function create()
 	{
 		$this->load->library('form_validation', 'input');
 
 		$data = json_decode($this->input->raw_input_stream, true);
 
-		if ($this->validation($data)) {
-			$this->output
-				->set_content_type('application/json')
-				->set_status_header(201)
-				->set_output(json_encode(['status' => 'success', 'Message' => "Success"]))->_display();
-			exit;
-		} else {
-			$this->output
-				->set_content_type('application/json')
-				->set_status_header(400)
-				->set_output(json_encode(['status' => 'error', 'Message' => "Error"]))->_display();
-			exit;
-		}
+		$this->save_profile($data);
 	}
-	   /**
-     * @OA\Put(
-     * path="/profiles/{id}",
-     * summary="Atualiza um perfil existente",
-     * tags={"Profiles"},
-     * @OA\Parameter(
-     * name="id",
-     * in="path",
-     * required=true,
-     * description="ID do perfil a ser atualizado",
-     * @OA\Schema(type="integer", format="int64")
-     * ),
-     * @OA\RequestBody(
-     * @OA\JsonContent(ref="#/components/schemas/UpdateProfile")
-     * ),
-     * @OA\Response(response="200"),
-     * @OA\Response(response="400"),
-     * @OA\Response(response="404")
-     * )
-     */
+	/**
+	 * @OA\Put(
+	 * path="/profiles/{id}",
+	 * summary="Atualiza um perfil existente",
+	 * tags={"Profiles"},
+	 * @OA\Parameter(
+	 * name="id",
+	 * in="path",
+	 * required=true,
+	 * description="ID do perfil a ser atualizado",
+	 * @OA\Schema(type="integer", format="int64")
+	 * ),
+	 * @OA\RequestBody(
+	 * @OA\JsonContent(ref="#/components/schemas/UpdateProfile")
+	 * ),
+	 * @OA\Response(response="200"),
+	 * @OA\Response(response="400"),
+	 * @OA\Response(response="404")
+	 * )
+	 */
 	public function update($id)
 	{
 		$this->load->library('form_validation', 'input');
 
 		$data = json_decode($this->input->raw_input_stream, true);
 
-		if ($this->validation($data)) {
-			$this->output
-				->set_content_type('application/json')
-				->set_status_header(200)
-				->set_output(json_encode(['status' => 'success', 'Message' => "Success"]))->_display();
-			exit;
-		} else {
-			$this->output
-				->set_content_type('application/json')
-				->set_status_header(400)
-				->set_output(json_encode(['status' => 'error', 'Message' => "Error"]))->_display();
-			exit;
-		}
+		$this->save_profile($data, $id);
 	}
-	   /**
-     * @OA\Delete(
-     * path="/profiles/{id}",
-     * summary="Deleta um perfil",
-     * tags={"Profiles"},
-     * @OA\Parameter(
-     * name="id",
-     * in="path",
-     * required=true,
-     * description="ID do perfil a ser deletado",
-     * @OA\Schema(type="integer", format="int64")
-     * ),
-     * @OA\Response(response="200"),
-     * @OA\Response(response="404")
-     * )
-     */
+	/**
+	 * @OA\Delete(
+	 * path="/profiles/{id}",
+	 * summary="Deleta um perfil",
+	 * tags={"Profiles"},
+	 * @OA\Parameter(
+	 * name="id",
+	 * in="path",
+	 * required=true,
+	 * description="ID do perfil a ser deletado",
+	 * @OA\Schema(type="integer", format="int64")
+	 * ),
+	 * @OA\Response(response="200"),
+	 * @OA\Response(response="404")
+	 * )
+	 */
 	public function delete($id)
 	{
 		$this->profile_model->delete($id);
@@ -199,22 +175,57 @@ class Profiles_controller extends CI_Controller
 	public function validation($data)
 	{
 		$this->form_validation->set_data($data);
-        $this->form_validation->set_rules('first_name', 'First Name', 'trim');
-        $this->form_validation->set_rules('last_name', 'Last Name', 'trim');
-        $this->form_validation->set_rules('website', 'Website', 'valid_url|trim');
-        $this->form_validation->set_rules('instagram', 'Instagram', 'trim');
-        $this->form_validation->set_rules('facebook', 'Facebook', 'trim');
-        $this->form_validation->set_rules('linkedin', 'LinkedIn', 'trim');
-        $this->form_validation->set_rules('twitter_x', 'Twitter X', 'trim');
-        $this->form_validation->set_rules('avatar', 'Avatar', 'valid_url|trim');
-        $this->form_validation->set_rules('bio', 'Bio', 'trim');
-        $this->form_validation->set_rules('user_id', 'User ID', 'required|integer');
+		$this->form_validation->set_rules('first_name', 'First Name', 'required|trim');
+		$this->form_validation->set_rules('last_name', 'Last Name', 'required|trim');
+		$this->form_validation->set_rules('website', 'Website', 'valid_url|trim');
+		$this->form_validation->set_rules('instagram', 'Instagram', 'trim');
+		$this->form_validation->set_rules('facebook', 'Facebook', 'trim');
+		$this->form_validation->set_rules('linkedin', 'LinkedIn', 'trim');
+		$this->form_validation->set_rules('twitter_x', 'Twitter X', 'trim');
+		$this->form_validation->set_rules('avatar', 'Avatar', 'valid_url|trim');
+		$this->form_validation->set_rules('bio', 'Bio', 'trim');
+		$this->form_validation->set_rules('user_id', 'User ID', 'required|integer');
 
-        if ($this->form_validation->run() == FALSE) {
-            return false;
-        } else {
-            return true;
-        }
+		return $this->form_validation->run();
 	}
-	
+
+	public function save_profile(array $data, int $id = null)
+	{
+		if ($this->validation($data)) {
+			if ($id === null) {
+
+				$this->profile_model->insert($data);
+				$this->output
+					->set_content_type('application/json')
+					->set_status_header(201)
+					->set_output(json_encode(['status' => 'success', 'Message' => "Perfil criado com sucesso"]));
+				exit;
+			} else {
+
+				if ($this->profile_model->find($id)) {
+					$this->profile_model->update($id, $data);
+					$this->output
+						->set_content_type('application/json')
+						->set_status_header(200)
+						->set_output(json_encode(['status' => 'success', 'Message' => "Perfil atualizado com sucesso"]))->_display();
+					exit;
+				} else {
+
+					$this->output
+						->set_content_type('application/json')
+						->set_status_header(404)
+						->set_output(json_encode(['status' => 'error', 'Message' => "Perfil não encontrado"]))->_display();
+					exit;
+				}
+			}
+		} else {
+
+			$this->output
+				->set_content_type('application/json')
+				->set_status_header(400)
+				->set_output(json_encode(['status' => 'error', 'Message' => "Erro de validação", 'errors' => $this->form_validation->error_array()]))->_display();
+			exit;
+		}
 	}
+
+}
