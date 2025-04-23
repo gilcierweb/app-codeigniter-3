@@ -172,7 +172,7 @@ class Profiles_controller extends CI_Controller
 			->set_content_type('application/json')
 			->set_output(json_encode(['status' => 'success']));
 	}
-	public function validation($data)
+	private function validation($data)
 	{
 		$this->form_validation->set_data($data);
 		$this->form_validation->set_rules('first_name', 'First Name', 'required|trim');
@@ -198,7 +198,7 @@ class Profiles_controller extends CI_Controller
 				$this->output
 					->set_content_type('application/json')
 					->set_status_header(201)
-					->set_output(json_encode(['status' => 'success', 'Message' => "Perfil criado com sucesso"]));
+					->set_output(json_encode(['status' => 'success', 'Message' => "Perfil criado com sucesso"]))->_display();
 				exit;
 			} else {
 
